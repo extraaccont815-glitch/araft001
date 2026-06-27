@@ -40,9 +40,10 @@ export default function SellerForms() {
             <div className="flex justify-center">Become a seller</div>
           </Link>
         </div>
-        <div className="p-4 sm :p-6 md :p-8 w-full ">     {pathname === "/seller" ? <SellerLogin /> : <SellerMsgForm />}
+        <div className="p-4 sm:p-6 md:p-8 w-full">
+          {pathname === "/seller" ? <SellerLogin /> : <SellerMsgForm />}
         </div>
+      </div>
     </div>
-    </div >
   );
 }
