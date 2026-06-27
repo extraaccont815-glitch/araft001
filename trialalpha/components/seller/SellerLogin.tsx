@@ -1,12 +1,41 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 export default function SellerLogin() {
     const [identifier, setIdentifier] = useState("");
+    const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
-    const [password, setpassword] = useState("");
     const [loading, setLoading] = useState(false);
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setMessage("");
+
+        try {
+            const response = await fetch("/api/seller/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ identifier, password }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setMessage("✅ Login successful!");
+                // Redirect or handle success
+            } else {
+                setMessage(`❌ ${data.message || "Login failed"}`);
+            }
+        } catch (error) {
+            setMessage("❌ An error occurred. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <form className="space-y-4 w-full" onSubmit={handleLogin}>
             <div>
@@ -42,8 +71,9 @@ export default function SellerLogin() {
             <button
                 type="submit"
                 disabled={loading}
-                className={`w-full flex justify-center items-center gap-2 bg-[#5e3e89] text-white py-2 sm:py-3 rounded-lg transition text-sm sm:text-base font-medium ${loading ? "opacity-60 cursor-not-allowed" : "hover:bg-[#392655]"
-                    }`}
+                className={`w-full flex justify-center items-center gap-2 bg-[#5e3e89] text-white py-2 sm:py-3 rounded-lg transition text-sm sm:text-base font-medium ${
+                    loading ? "opacity-60 cursor-not-allowed" : "hover:bg-[#392655]"
+                }`}
             >
                 {loading ? (
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -51,22 +81,26 @@ export default function SellerLogin() {
                     "Login"
                 )}
             </button>
+
             <div className="flex justify-center">
                 {message && (
                     <p
-                        className={`text-sm ${message.includes("❌") ? "text-red-600" : "text-green-600"
-                            }`}
+                        className={`text-sm ${
+                            message.includes("❌") ? "text-red-600" : "text-green-600"
+                        }`}
                     >
                         {message}
                     </p>
                 )}
             </div>
+
             <div className="text-center">
-
-                <link href="/seller/forgot-password"
+                <Link
+                    href="/seller/forgot-password"
                     className="text-sm sm:text-base text-[#5e3e89] hover:underline hover:text-[#392655] transition"
-                > Forgot Password</link>
-
+                >
+                    Forgot Password
+                </Link>
             </div>
         </form>
     );
