@@ -1,12 +1,28 @@
 "use client";
-
 import { useState } from "react";
 
 export default function SellerLogin() {
+    const router = useRouter();
     const [identifier, setIdentifier] = useState("");
     const [message, setMessage] = useState("");
-    const [password, setpassword] = useState("");
+    const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    async function handleLogin(e: React.FormEvent) {
+        e.preventDefault();
+        setLoading(true);
+        const result = await signIn("credentials", {
+            redirect: false,
+            identifier: identifier.trim(),
+            password,
+        });
+        if (result?.error) {
+            setMessage(result.error);
+            setLoading(false);
+        } else {
+            console.log("Login successful");
+            router.replace("/seller/dashboard");
+        }
+    }
     return (
         <form className="space-y-4 w-full" onSubmit={handleLogin}>
             <div>
@@ -23,7 +39,6 @@ export default function SellerLogin() {
                     required
                 />
             </div>
-
             <div>
                 <label className="block text-sm sm:text-base font-medium mb-1">
                     Password
@@ -33,12 +48,11 @@ export default function SellerLogin() {
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter your Password"
+                    placeholder="Enter your password"
                     className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5e3e89]"
                     required
                 />
             </div>
-
             <button
                 type="submit"
                 disabled={loading}
@@ -62,11 +76,12 @@ export default function SellerLogin() {
                 )}
             </div>
             <div className="text-center">
-
-                <link href="/seller/forgot-password"
+                <Link
+                    href="/seller/forget-password"
                     className="text-sm sm:text-base text-[#5e3e89] hover:underline hover:text-[#392655] transition"
-                > Forgot Password</link>
-
+                >
+                    Forget Password
+                </Link>
             </div>
         </form>
     );
