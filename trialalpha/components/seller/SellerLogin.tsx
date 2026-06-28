@@ -10,21 +10,21 @@ export default function SellerLogin() {
 
     return (<form className="space-y-4 w-full">
         <div>
-            <label className="block text-sm sm:text-base font-medium mb-1">
-                Email or Seller name
+            <label className="block text-sm sm:text-base font-medium mb-1 text-[#000000]">
+                Email 
             </label>
             <input
                 name="email"
                 type="text"
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
-                placeholder="Enter your email or seller name"
-                className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5e3e89]"
+                placeholder="Enter your Email"
+                className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5e3e89] text-[#000000] "
                 required
             />
         </div>
         <div>
-            <label className="block text-sm sm:text-base font-medium mb-1">
+            <label className="block text-sm sm:text-base font-medium mb-1  text-[#000000]">
                 Password
             </label>
             <input
@@ -33,14 +33,14 @@ export default function SellerLogin() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5e3e89]"
+                className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5e3e89] text-[#000000]"
                 required
             />
         </div>
         <button
             type="submit"
             disabled={loading}
-            className={`w-full flex justify-center items-center gap-2 bg-[#5e3e89] text-white py-2 sm:py-3 rounded-lg transition text-sm sm:text-base font-medium ${loading ? "opacity-60 cursor-not-allowed" : "hover:bg-[#392655]"
+            className={`w-full flex justify-center items-center gap-2 bg-[#5e3e89] text-white py-2 sm:py-3 rounded-lg transition text-sm sm:text-base font-medium ${loading ? "opacity-100 cursor-not-allowed" : "hover:bg-[#392655]"
                 }`}
         >
             {loading ? (
@@ -64,7 +64,7 @@ export default function SellerLogin() {
                 href="/seller/forget-password"
                 className="text-sm sm:text-base text-[#5e3e89] hover:underline hover:text-[#392655] transition"
             >
-                Forget Password
+                Forgot Password
             </Link>
         </div>
     </form>

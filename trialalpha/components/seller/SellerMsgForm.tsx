@@ -8,33 +8,31 @@ export default function SellerMsgForm() {
                 name="email"
                 type="email"
                 placeholder="Enter your email"
-                className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5cca01]"
+                className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#964B00]"
             />
         </div>
 
         <div>
-            <label className="block text-sm sm:text-base font-medium mb-1">Seller Name</label>
+            <label className="block text-sm sm:text-base font-medium mb-1">Dealership Name</label>
             <input
                 name="SellerName"
                 type="text"
                 placeholder="Enter your Seller Username"
-                className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5cca01]"
+                className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#964B00]"
             />
         </div>
 
 
         <div>
-            <label className="block text-sm sm:text-base font-medium mb-1">Message</label>
+            <label className="block text-sm sm:text-base font-medium mb-1">About your dealership</label>
             <textarea
                 name="message"
                 placeholder="Enter your message"
                 rows={2}
-                className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5cca01] resize-none"
+                className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#964B00] resize-none"
             />
         </div>
 
-        <button
-            type="submit"
-            className="w-full py-2 rounded-lg text-white transition-all duration-200 bg-[#5cca01] hover:bg-[#4aa800]">Send</button>
+      <button type="submit" className={'w-full py-2 rounded-lg text-white transition-all duration-200 bg-[#964B00] hover:bg-[#964B00] '}> Send</button>
     </Form>);
 }

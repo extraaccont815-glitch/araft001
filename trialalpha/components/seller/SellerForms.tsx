@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import SellerLogin from "./SellerLogin";
+import SellerMsgForm from "./SellerMsgForm";
 
 export default function SellerForms() {
   const pathname = usePathname();
@@ -25,23 +26,25 @@ export default function SellerForms() {
           <Link
             href="/seller"
             className={`flex-1 py-3 text-base sm:text-lg font-medium transition-colors duration-200 ${pathname === "/seller"
-                ? "bg-gray-100 text-[#5e3e89]"
+                ? "bg-[#543111] text-[#5e3e89]"
                 : "text-gray-500 hover:bg-gray-50"
               }`}
           >
-            <div className="flex justify-center">Login</div>
+            <div className=" flex justify-center">Login</div>
           </Link>
           <Link
             href="/seller/seller-message"
-            className={`flex-1 py-3 text-base sm:text-lg font-medium transition-colors duration-200 ${pathname === "/seller/seller-message"
+            className={`flex-1 py-3 text-base sm:text-lg font-medium transition-colors duration-200 ${pathname === "/seller/seller-message "
                 ? "bg-gray-100 text-[#5cca01]"
                 : "text-gray-500 hover:bg-gray-50"
               }`}
           >
-            <div className="flex justify-center">Become a seller</div>
+            <div className="flex justify-center bg-gray-100 text-[#5cca01] "
+            >Become a seller
+            </div>
           </Link>
         </div>
-        <div className="p-4 sm:p-6 md:p-8 w-full">
+        <div className="p-4 sm:p-6 md:p-8 w-full ">
           {pathname === "/seller" ? <SellerLogin/> : <SellerMsgForm />}
         </div>
       </div>
