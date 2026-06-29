@@ -2,12 +2,12 @@ import mongoose from "mongoose";
 const MONGODB_URI = process.env.MONGODB_URI!;
 
 if (!MONGODB_URI) {
-    throw new Error("Please define MONGODB_URI in env variables"); // Fixed capitalization
+    throw new Error("Please define MONGODB_URI in env variables"); 
 }
 let cached = (global as any).mongoose;
 
 if (!cached) {
-    // FIXED: Changed "prommise" to "promise"
+    
     cached = (global as any).mongoose = { conn: null, promise: null };
 }
 
