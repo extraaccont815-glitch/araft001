@@ -17,7 +17,7 @@ export default function SellerMsgForm() {
             <input
                 name="SellerName"
                 type="text"
-                placeholder="Enter your Seller Username"
+                placeholder="Enter your Dealership Name"
                 className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#964B00]"
             />
         </div>
@@ -27,7 +27,7 @@ export default function SellerMsgForm() {
             <label className="block text-sm sm:text-base font-medium mb-1">About your dealership</label>
             <textarea
                 name="message"
-                placeholder="Enter your message"
+                placeholder="Please include valid address"
                 rows={2}
                 className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#964B00] resize-none"
             />
