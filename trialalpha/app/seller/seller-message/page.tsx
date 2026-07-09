@@ -11,7 +11,7 @@ export default async function AuthPage() {
           className="flex items-center hover:opacity-80 transition"
         >
           <Image
-            src="/images/logo.png"
+            src="/images/logo1.png"
             alt="Logo"
             width={190}
             height={190}
