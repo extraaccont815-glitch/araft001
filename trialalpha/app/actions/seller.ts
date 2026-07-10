@@ -46,7 +46,7 @@ export async function sellerMsg(
             { validateStatus: () => true }
         );
         
-        if (response.status === 200) {
+        if (response.status === 201) {
             return { errors: {}, success: response.data.message };
         } else {
             return { errors: {}, error: response.data.error || "Something went wrong" };

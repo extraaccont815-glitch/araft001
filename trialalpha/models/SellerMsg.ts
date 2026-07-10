@@ -1,4 +1,4 @@
-import {Schema, model, Document} from 'mongoose';
+import {Schema, model, Document, models} from 'mongoose';
 
 export interface IMsg extends Document {
 email?: string;

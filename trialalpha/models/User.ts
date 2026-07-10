@@ -1,3 +1,4 @@
+import { models } from 'mongoose';
 import { Schema, model, Document } from 'mongoose';
 
 export interface IUser extends Document {
@@ -18,7 +19,7 @@ const UserSchema = new Schema<IUser>(
         required: true
     },
     verified : {type: Boolean},
-}
+},
 {timestamps: true}
 );
 
