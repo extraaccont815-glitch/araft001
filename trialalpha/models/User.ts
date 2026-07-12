@@ -1,27 +1,26 @@
-import { models } from 'mongoose';
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, models, Document } from "mongoose";
 
 export interface IUser extends Document {
-    email?: string;
-    username?: string;
-    password?: string;
-    role: "user"| "seller"| "admin";
-    verified?: boolean;
+  email?: string;
+  username?: string;
+  password?: string;
+  role: "user" | "seller" | "admin";
+  verified?: boolean;
 }
 const UserSchema = new Schema<IUser>(
-    {
-    email: {type: String, sparse: true, trim: true},
-    username: {type: String, trim: true},
-    password: {type: String, trim: true, default: ""},
+  {
+    email: { type: String, sparse: true, trim: true },
+    username: { type: String, trim: true },
+    password: { type: String, trim: true, default: "" },
     role: {
-        type: String,
-        enum: ["user", "seller", "admin"],
-        required: true
+      type: String,
+      enum: ["user", "seller", "admin"],
+      required: true,
     },
-    verified : {type: Boolean},
-},
-{timestamps: true}
+    verified: { type: Boolean },
+  },
+  { timestamps: true }
 );
 
-const User = models?.User || model<IUser>('User', UserSchema);
+const User = models?.User || model<IUser>("User", UserSchema);
 export default User;

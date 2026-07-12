@@ -1,11 +1,10 @@
 "use client";
-
 import { FormState, sellerMsg } from "@/app/actions/seller";
 import Form from "next/form";
 import { useActionState } from "react";
 
 export default function SellerMsgForm() {
-  const initialState: FormState = {
+  const initialState:FormState = {
     errors: {},
   };
 
@@ -26,7 +25,7 @@ export default function SellerMsgForm() {
           placeholder="Enter your email"
           className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5cca01]"
         />
-        {state.errors?.email && (
+        {state.errors.email && (
           <p className="text-red-500 text-sm mt-1">{state.errors.email}</p>
         )}
       </div>
