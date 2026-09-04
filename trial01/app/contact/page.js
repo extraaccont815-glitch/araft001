@@ -45,7 +45,7 @@ const Contact = () => {
 
         {/* Professional Footer Notice */}
         <p className="text-xs text-slate-600">
-          Araft Mk1 © {new Date().getFullYear()} — Built for Masters' Union Startup Weekend.
+          Araft © {new Date().getFullYear()} — Built for India, with love from Hyderabad.
         </p>
 
       </div>
