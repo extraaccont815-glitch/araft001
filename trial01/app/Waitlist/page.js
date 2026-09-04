@@ -2,24 +2,23 @@
 
 import { useState } from 'react';
 
+const educationalInstitutions = [
+  "Meru International School (Miyapur)",
+  "Meru International School (Chandnagar)",
+  "Chirec International School",
+  "Oakridge International School",
+  "Delhi Public School (DPS Hyderabad)"
+];
+
+const generalLocations = [
+  "HITEC City Tech Park Hub",
+  "Gachibowli Financial District",
+  "Madhapur IT Corridor Cluster",
+  "Divyasree Orion Tech Park",
+  "DLF Cyber City Hyderabad"
+];
+
 export default function WaitlistPage() {
-  // EDIT THESE ARRAYS TO ADD OR REMOVE LOCATIONS EASILY
-  const educationalInstitutions = [
-    "Meru International School (Miyapur)",
-    "Meru International School (Chandnagar)",
-    "Chirec International School",
-    "Oakridge International School",
-    "Delhi Public School (DPS Hyderabad)"
-  ];
-
-  const generalLocations = [
-    "HITEC City Tech Park Hub",
-    "Gachibowli Financial District",
-    "Madhapur IT Corridor Cluster",
-    "Divyasree Orion Tech Park",
-    "DLF Cyber City Hyderabad"
-  ];
-
   const [activeForm, setActiveForm] = useState('individual');
   const [status, setStatus] = useState('idle');
 
@@ -35,19 +34,21 @@ export default function WaitlistPage() {
     contactName: '',
     workEmail: '',
     category: 'School',
+    selectedLocation: educationalInstitutions[0],
     fleetSizeNeeded: '1-5 Vehicles'
   });
+
+  const handleTabSwitch = (tab) => {
+    setActiveForm(tab);
+    setStatus('idle');
+  };
 
   const handleIndividualChange = (e) => {
     const { name, value } = e.target;
     setIndividualData((prev) => {
       const updated = { ...prev, [name]: value };
-      
-      // Update default destination when category changes
       if (name === 'profession') {
-        updated.destination = value === 'Parent'
-          ? educationalInstitutions[0]
-          : generalLocations[0];
+        updated.destination = value === 'Parent' ? educationalInstitutions[0] : generalLocations[0];
       }
       return updated;
     });
@@ -55,10 +56,16 @@ export default function WaitlistPage() {
 
   const handleInstitutionalChange = (e) => {
     const { name, value } = e.target;
-    setInstitutionData((prev) => ({ ...prev, [name]: value }));
+    setInstitutionData((prev) => {
+      const updated = { ...prev, [name]: value };
+      if (name === 'category') {
+        updated.selectedLocation = value === 'School' ? educationalInstitutions[0] : generalLocations[0];
+      }
+      return updated;
+    });
   };
 
-  async function handleSubmit(e, type) {
+  const handleSubmit = async (e, type) => {
     e.preventDefault();
     setStatus('loading');
 
@@ -69,85 +76,72 @@ export default function WaitlistPage() {
     try {
       const response = await fetch('https://formspree.io', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(payload),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
       });
 
       if (response.ok) {
         setStatus('success');
-        setIndividualData({
-          name: '',
-          email: '',
-          profession: 'Parent',
-          neighborhood: '',
-          destination: educationalInstitutions[0]
-        });
-        setInstitutionData({
-          contactName: '',
-          workEmail: '',
-          category: 'School',
-          fleetSizeNeeded: '1-5 Vehicles'
-        });
       } else {
         setStatus('error');
       }
     } catch {
       setStatus('error');
     }
-  }
+  };
 
   return (
-    <div className="flex-grow flex flex-col items-center justify-center bg-slate-950 px-4 py-12 md:py-16 text-white min-h-screen">
+    <div className="flex-grow flex flex-col items-center justify-center min-h-screen px-4 py-12 md:py-16">
       <div className="max-w-md w-full p-6 sm:p-8 bg-slate-900 rounded-xl shadow-2xl border border-slate-800 text-center">
-        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/10 text-blue-500 mb-4 text-xl">
-          🏢
-        </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-2 tracking-tight">
-          Araft Network Onboarding
+        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-2">
+          Join the Waitlist
         </h1>
-        <p className="text-slate-400 mb-6 text-xs sm:text-sm">
-          Select your registration track to secure customized route validation.
+        <p className="text-slate-400 text-xs sm:text-sm mb-6">
+          Reserve your spot in the network cluster today.
         </p>
 
-        {/* Tab Selection Row */}
+        {/* Tab Switcher */}
         <div className="flex bg-slate-950 p-1 rounded-lg border border-slate-800 mb-6">
           <button
             type="button"
-            onClick={() => { setActiveForm('individual'); setStatus('idle'); }}
-            className={`flex-1 py-2 text-xs sm:text-sm font-semibold rounded-md transition-all ${
+            onClick={() => handleTabSwitch('individual')}
+            className={`flex-1 py-2 text-xs sm:text-sm font-semibold rounded-md transition duration-200 ${
               activeForm === 'individual'
                 ? 'bg-blue-600 text-white shadow-md'
-                : 'text-slate-400 hover:text-slate-200'
+                : 'text-slate-400 hover:text-white'
             }`}
           >
             Individual Rider
           </button>
           <button
             type="button"
-            onClick={() => { setActiveForm('institutional'); setStatus('idle'); }}
-            className={`flex-1 py-2 text-xs sm:text-sm font-semibold rounded-md transition-all ${
+            onClick={() => handleTabSwitch('institutional')}
+            className={`flex-1 py-2 text-xs sm:text-sm font-semibold rounded-md transition duration-200 ${
               activeForm === 'institutional'
-                ? 'bg-blue-600 text-white shadow-md'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-indigo-600 text-white shadow-md'
+                : 'text-slate-400 hover:text-white'
             }`}
           >
             Institution / B2B Hub
           </button>
         </div>
 
-        {/* Success Banner */}
+        {/* Success Alert Banner */}
         {status === 'success' && (
           <div className="p-4 bg-emerald-500/10 text-emerald-400 rounded-lg text-sm border border-emerald-500/20 font-medium mb-6 text-left">
-            🎉 Route Profile Secured! Your onboarding registration details have been mapped into the network cluster dashboard.
+            🎉 Registration successful! Your spot has been reserved on the waitlist network.
           </div>
         )}
 
-        {/* Error Banner */}
+        {/* Error Alert Banner */}
         {status === 'error' && (
           <div className="p-4 bg-rose-500/10 text-rose-400 rounded-lg text-sm border border-rose-500/20 font-medium mb-6 text-left flex justify-between items-center">
-            <span>⚠️ Submission failed. Please try again.</span>
-            <button 
-              type="button" 
+            <span>⚠️ Submission failed. Please check details and try again.</span>
+            <button
+              type="button"
               onClick={() => setStatus('idle')}
               className="text-xs underline ml-2 font-semibold hover:text-rose-300"
             >
@@ -156,10 +150,10 @@ export default function WaitlistPage() {
           </div>
         )}
 
-        {/* Form rendering */}
+        {/* Form Logic */}
         {status !== 'success' && (
           activeForm === 'individual' ? (
-            /* TRACK A: INDIVIDUAL RIDER REGISTRATION FORM */
+            /* Track A: Individual Rider Form UI */
             <form onSubmit={(e) => handleSubmit(e, 'individual')} className="flex flex-col gap-4 text-left">
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Full Name</label>
@@ -167,10 +161,10 @@ export default function WaitlistPage() {
                   type="text"
                   name="name"
                   required
-                  placeholder="Enter your name"
+                  placeholder="Enter your full name"
                   value={individualData.name}
                   onChange={handleIndividualChange}
-                  className="px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 text-sm transition"
+                  className="w-full px-4 py-2.5 text-sm rounded-lg bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500 transition duration-200 cursor-pointer placeholder-slate-600"
                 />
               </div>
 
@@ -183,20 +177,20 @@ export default function WaitlistPage() {
                   placeholder="name@example.com"
                   value={individualData.email}
                   onChange={handleIndividualChange}
-                  className="px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 text-sm transition"
+                  className="w-full px-4 py-2.5 text-sm rounded-lg bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500 transition duration-200 cursor-pointer placeholder-slate-600"
                 />
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">I am a...</label>
+                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Profession</label>
                 <select
                   name="profession"
                   value={individualData.profession}
                   onChange={handleIndividualChange}
-                  className="px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-blue-500 cursor-pointer"
+                  className="w-full px-4 py-2.5 text-sm rounded-lg bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500 transition duration-200 cursor-pointer"
                 >
-                  <option value="Parent">Parent (Booking for children)</option>
-                  <option value="Office Employee">Office Employee / Working Professional</option>
+                  <option value="Parent">Parent</option>
+                  <option value="Office Employee">Office Employee</option>
                   <option value="Daily Commuter">Daily Commuter</option>
                 </select>
               </div>
@@ -210,63 +204,39 @@ export default function WaitlistPage() {
                   placeholder="e.g., Miyapur, Gachibowli"
                   value={individualData.neighborhood}
                   onChange={handleIndividualChange}
-                  className="px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 text-sm transition"
+                  className="w-full px-4 py-2.5 text-sm rounded-lg bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500 transition duration-200 cursor-pointer placeholder-slate-600"
                 />
               </div>
 
-              {/* DYNAMIC DESTINATION SELECTOR */}
-              {individualData.profession === 'Parent' ? (
-                /* Educational Institutions Option */
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                    Educational Institutions
-                  </label>
-                  <select
-                    name="destination"
-                    required
-                    value={individualData.destination}
-                    onChange={handleIndividualChange}
-                    className="px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-blue-500 cursor-pointer"
-                  >
-                    {educationalInstitutions.map((school, idx) => (
-                      <option key={idx} value={school}>
-                        {school}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              ) : (
-                /* General Locations Option */
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                    General Locations
-                  </label>
-                  <select
-                    name="destination"
-                    required
-                    value={individualData.destination}
-                    onChange={handleIndividualChange}
-                    className="px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-blue-500 cursor-pointer"
-                  >
-                    {generalLocations.map((location, idx) => (
-                      <option key={idx} value={location}>
-                        {location}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Target Facility Destination</label>
+                <select
+                  name="destination"
+                  value={individualData.destination}
+                  onChange={handleIndividualChange}
+                  className="w-full px-4 py-2.5 text-sm rounded-lg bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500 transition duration-200 cursor-pointer"
+                >
+                  {individualData.profession === 'Parent'
+                    ? educationalInstitutions.map((inst, index) => (
+                        <option key={index} value={inst}>{inst}</option>
+                      ))
+                    : generalLocations.map((loc, index) => (
+                        <option key={index} value={loc}>{loc}</option>
+                      ))
+                  }
+                </select>
+              </div>
 
               <button
                 type="submit"
                 disabled={status === 'loading'}
-                className="mt-2 w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition disabled:opacity-50 text-sm shadow-lg shadow-blue-600/20"
+                className="w-full px-4 py-3 font-semibold rounded-lg text-sm shadow-lg transition duration-200 disabled:opacity-50 active:scale-98 bg-blue-600 hover:bg-blue-700 text-white shadow-blue-600/20 mt-2"
               >
-                {status === 'loading' ? 'Securing Spot...' : 'Join Individual Waitlist'}
+                {status === 'loading' ? 'Submitting...' : 'Join Individual Waitlist'}
               </button>
             </form>
           ) : (
-            /* TRACK B: INSTITUTIONAL SPECIFICITY ONBOARDING FORM */
+            /* Track B: Institution / B2B Hub Form UI */
             <form onSubmit={(e) => handleSubmit(e, 'institutional')} className="flex flex-col gap-4 text-left">
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Official Representative Name</label>
@@ -274,10 +244,10 @@ export default function WaitlistPage() {
                   type="text"
                   name="contactName"
                   required
-                  placeholder="e.g., Administrator, HR Manager"
+                  placeholder="Enter representative name"
                   value={institutionData.contactName}
                   onChange={handleInstitutionalChange}
-                  className="px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 text-sm transition"
+                  className="w-full px-4 py-2.5 text-sm rounded-lg bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500 transition duration-200 cursor-pointer placeholder-slate-600"
                 />
               </div>
 
@@ -290,7 +260,7 @@ export default function WaitlistPage() {
                   placeholder="admin@institution.com"
                   value={institutionData.workEmail}
                   onChange={handleInstitutionalChange}
-                  className="px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 text-sm transition"
+                  className="w-full px-4 py-2.5 text-sm rounded-lg bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500 transition duration-200 cursor-pointer placeholder-slate-600"
                 />
               </div>
 
@@ -300,10 +270,29 @@ export default function WaitlistPage() {
                   name="category"
                   value={institutionData.category}
                   onChange={handleInstitutionalChange}
-                  className="px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-blue-500 cursor-pointer"
+                  className="w-full px-4 py-2.5 text-sm rounded-lg bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500 transition duration-200 cursor-pointer"
                 >
-                  <option value="School">Educational Institute (Schools / Colleges)</option>
-                  <option value="Office Workspace">Corporate Workspace (Offices / Tech Parks)</option>
+                  <option value="School">Educational Institute</option>
+                  <option value="Office Workspace">Corporate Workspace</option>
+                </select>
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Your Institution Name</label>
+                <select
+                  name="selectedLocation"
+                  value={institutionData.selectedLocation}
+                  onChange={handleInstitutionalChange}
+                  className="w-full px-4 py-2.5 text-sm rounded-lg bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500 transition duration-200 cursor-pointer"
+                >
+                  {institutionData.category === 'School'
+                    ? educationalInstitutions.map((inst, index) => (
+                        <option key={index} value={inst}>{inst}</option>
+                      ))
+                    : generalLocations.map((loc, index) => (
+                        <option key={index} value={loc}>{loc}</option>
+                      ))
+                  }
                 </select>
               </div>
 
@@ -313,7 +302,7 @@ export default function WaitlistPage() {
                   name="fleetSizeNeeded"
                   value={institutionData.fleetSizeNeeded}
                   onChange={handleInstitutionalChange}
-                  className="px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-blue-500 cursor-pointer"
+                  className="w-full px-4 py-2.5 text-sm rounded-lg bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-blue-500 transition duration-200 cursor-pointer"
                 >
                   <option value="1-5 Vehicles">1-5 Vehicles</option>
                   <option value="5-15 Vehicles">5-15 Vehicles</option>
@@ -324,9 +313,9 @@ export default function WaitlistPage() {
               <button
                 type="submit"
                 disabled={status === 'loading'}
-                className="mt-2 w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition disabled:opacity-50 text-sm shadow-lg shadow-blue-600/20"
+                className="w-full px-4 py-3 font-semibold rounded-lg text-sm shadow-lg transition duration-200 disabled:opacity-50 active:scale-98 bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-600/20 mt-2"
               >
-                {status === 'loading' ? 'Registering Hub...' : 'Register Institutional Hub'}
+                {status === 'loading' ? 'Submitting...' : 'Register Institutional Hub'}
               </button>
             </form>
           )
