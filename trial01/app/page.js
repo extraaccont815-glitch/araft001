@@ -1,3 +1,5 @@
+'use client'; // This tells Next.js to allow interactive handlers like onError
+
 import React from "react";
 
 const Page = () => {
