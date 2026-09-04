@@ -43,7 +43,7 @@ export default function WaitlistPage() {
           Join the Waitlist
         </h1>
         <p className="text-slate-400 mb-6 text-sm">
-          Be the first to get exclusive early access when <span className="text-blue-400 font-semibold">Araft Mk1</span> launches new modules.
+          Be the first to get exclusive early access when <span className="text-blue-400 font-semibold">Araft</span> launches new modules.
         </p>
         
         {status === 'success' ? (
