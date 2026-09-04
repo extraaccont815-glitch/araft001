@@ -35,7 +35,6 @@ export default function WaitlistPage() {
     contactName: '',
     workEmail: '',
     category: 'School',
-    selectedLocation: supportedInstitutions.schools[0],
     fleetSizeNeeded: '1-5 Vehicles'
   });
 
@@ -54,15 +53,7 @@ export default function WaitlistPage() {
 
   const handleInstitutionalChange = (e) => {
     const { name, value } = e.target;
-    setInstitutionData((prev) => {
-      const updated = { ...prev, [name]: value };
-      if (name === 'category') {
-        updated.selectedLocation = value === 'School'
-          ? supportedInstitutions.schools[0]
-          : supportedInstitutions.offices[0];
-      }
-      return updated;
-    });
+    setInstitutionData((prev) => ({ ...prev, [name]: value }));
   };
 
   async function handleSubmit(e, type) {
@@ -93,7 +84,6 @@ export default function WaitlistPage() {
           contactName: '',
           workEmail: '',
           category: 'School',
-          selectedLocation: supportedInstitutions.schools[0],
           fleetSizeNeeded: '1-5 Vehicles'
         });
       } else {
@@ -240,3 +230,78 @@ export default function WaitlistPage() {
               <button
                 type="submit"
                 disabled={status === 'loading'}
+                className="mt-2 w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition disabled:opacity-50 text-sm shadow-lg shadow-blue-600/20"
+              >
+                {status === 'loading' ? 'Securing Spot...' : 'Join Individual Waitlist'}
+              </button>
+            </form>
+          ) : (
+            /* TRACK B: INSTITUTIONAL SPECIFICITY ONBOARDING FORM */
+            <form onSubmit={(e) => handleSubmit(e, 'institutional')} className="flex flex-col gap-4 text-left">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Official Representative Name</label>
+                <input
+                  type="text"
+                  name="contactName"
+                  required
+                  placeholder="e.g., Administrator, HR Manager"
+                  value={institutionData.contactName}
+                  onChange={handleInstitutionalChange}
+                  className="px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 text-sm transition"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Institutional Email</label>
+                <input
+                  type="email"
+                  name="workEmail"
+                  required
+                  placeholder="admin@institution.com"
+                  value={institutionData.workEmail}
+                  onChange={handleInstitutionalChange}
+                  className="px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 text-sm transition"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Institution Classification</label>
+                <select
+                  name="category"
+                  value={institutionData.category}
+                  onChange={handleInstitutionalChange}
+                  className="px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-blue-500 cursor-pointer"
+                >
+                  <option value="School">Educational Institute (Schools / Colleges)</option>
+                  <option value="Office Workspace">Corporate Workspace (Offices / Tech Parks)</option>
+                </select>
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Fleet Capacity Needed</label>
+                <select
+                  name="fleetSizeNeeded"
+                  value={institutionData.fleetSizeNeeded}
+                  onChange={handleInstitutionalChange}
+                  className="px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-blue-500 cursor-pointer"
+                >
+                  <option value="1-5 Vehicles">1-5 Vehicles</option>
+                  <option value="5-15 Vehicles">5-15 Vehicles</option>
+                  <option value="15+ Dedicated Fleet">15+ Dedicated Fleet</option>
+                </select>
+              </div>
+
+              <button
+                type="submit"
+                disabled={status === 'loading'}
+                className="mt-2 w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition disabled:opacity-50 text-sm shadow-lg shadow-blue-600/20"
+              >
+                {status === 'loading' ? 'Registering Hub...' : 'Register Institutional Hub'}
+              </button>
+            </form>
+          )
+        )}
+      </div>
+    </div>
+  );
+}
