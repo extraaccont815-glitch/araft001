@@ -74,7 +74,7 @@ export default function WaitlistPage() {
       : { submissionType: 'B2B Institutional Partnership', ...institutionData };
 
     try {
-      const response = await fetch('https://formspree.io', {
+      const response = await fetch('https://formspree.io/f/mjyvowlv', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
