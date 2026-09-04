@@ -3,22 +3,22 @@
 import { useState } from 'react';
 
 export default function WaitlistPage() {
-  const supportedInstitutions = {
-    schools: [
-      "Meru International School (Miyapur)",
-      "Meru International School (Chandnagar)",
-      "Chirec International School",
-      "Oakridge International School",
-      "Delhi Public School (DPS Hyderabad)"
-    ],
-    offices: [
-      "HITEC City Tech Park Hub",
-      "Gachibowli Financial District",
-      "Madhapur IT Corridor Cluster",
-      "Divyasree Orion Tech Park",
-      "DLF Cyber City Hyderabad"
-    ]
-  };
+  // EDIT THESE ARRAYS TO ADD OR REMOVE LOCATIONS EASILY
+  const educationalInstitutions = [
+    "Meru International School (Miyapur)",
+    "Meru International School (Chandnagar)",
+    "Chirec International School",
+    "Oakridge International School",
+    "Delhi Public School (DPS Hyderabad)"
+  ];
+
+  const generalLocations = [
+    "HITEC City Tech Park Hub",
+    "Gachibowli Financial District",
+    "Madhapur IT Corridor Cluster",
+    "Divyasree Orion Tech Park",
+    "DLF Cyber City Hyderabad"
+  ];
 
   const [activeForm, setActiveForm] = useState('individual');
   const [status, setStatus] = useState('idle');
@@ -28,7 +28,7 @@ export default function WaitlistPage() {
     email: '',
     profession: 'Parent',
     neighborhood: '',
-    destination: supportedInstitutions.schools[0]
+    destination: educationalInstitutions[0]
   });
 
   const [institutionData, setInstitutionData] = useState({
@@ -42,10 +42,12 @@ export default function WaitlistPage() {
     const { name, value } = e.target;
     setIndividualData((prev) => {
       const updated = { ...prev, [name]: value };
+      
+      // Update default destination when category changes
       if (name === 'profession') {
         updated.destination = value === 'Parent'
-          ? supportedInstitutions.schools[0]
-          : supportedInstitutions.offices[0];
+          ? educationalInstitutions[0]
+          : generalLocations[0];
       }
       return updated;
     });
@@ -78,7 +80,7 @@ export default function WaitlistPage() {
           email: '',
           profession: 'Parent',
           neighborhood: '',
-          destination: supportedInstitutions.schools[0]
+          destination: educationalInstitutions[0]
         });
         setInstitutionData({
           contactName: '',
@@ -212,20 +214,48 @@ export default function WaitlistPage() {
                 />
               </div>
 
-              <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Target Facility Destination</label>
-                <select
-                  name="destination"
-                  value={individualData.destination}
-                  onChange={handleIndividualChange}
-                  className="px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-blue-500 cursor-pointer"
-                >
-                  {individualData.profession === 'Parent'
-                    ? supportedInstitutions.schools.map((school, idx) => <option key={idx} value={school}>{school}</option>)
-                    : supportedInstitutions.offices.map((office, idx) => <option key={idx} value={office}>{office}</option>)
-                  }
-                </select>
-              </div>
+              {/* DYNAMIC DESTINATION SELECTOR */}
+              {individualData.profession === 'Parent' ? (
+                /* Educational Institutions Option */
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                    Educational Institutions
+                  </label>
+                  <select
+                    name="destination"
+                    required
+                    value={individualData.destination}
+                    onChange={handleIndividualChange}
+                    className="px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-blue-500 cursor-pointer"
+                  >
+                    {educationalInstitutions.map((school, idx) => (
+                      <option key={idx} value={school}>
+                        {school}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ) : (
+                /* General Locations Option */
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                    General Locations
+                  </label>
+                  <select
+                    name="destination"
+                    required
+                    value={individualData.destination}
+                    onChange={handleIndividualChange}
+                    className="px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-blue-500 cursor-pointer"
+                  >
+                    {generalLocations.map((location, idx) => (
+                      <option key={idx} value={location}>
+                        {location}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
 
               <button
                 type="submit"
