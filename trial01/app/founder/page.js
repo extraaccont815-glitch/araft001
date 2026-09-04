@@ -1,3 +1,5 @@
+'use client'; // This tells Next.js to safely allow the interactive onError image fallback
+
 import React from 'react';
 
 export default function Founder() {
