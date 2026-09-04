@@ -20,6 +20,6 @@ const Contact = () => {
 
     </main>
   );
-};~
+};
 
 export default Contact;
