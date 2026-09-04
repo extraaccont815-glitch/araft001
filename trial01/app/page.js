@@ -9,8 +9,7 @@ const Page = () => {
         <h1 className="text-4xl text-blue-500 hover:text-rose-500 hover:scale-102 p-4 font-bold transition-all duration-400 ease-in-out cursor-pointer underline">
   Welcome to Araft
 </h1>
-<p className="text-gray-500 p-5 text-2xl">Lets understand what is Araft:
-  </p>
+
   <dl>
 
     <dt className=" text-xl text-gray-800 ml-5">1. What is Araft ?

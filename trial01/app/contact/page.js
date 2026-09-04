@@ -15,7 +15,7 @@ const Contact = () => {
     <span className="text-3xl">Email address</span> : 
     mohammedumarfarooq.19cmis0093@meruinternationalschool.com
   </p>
-  <h1 className=' text-gray-700 text-3xl p-5 m-6 font-semibold  '>And pretty much that is it 👍</h1>
+  <h1 className=' text-gray-700 text-3xl p-5 m-6 font-semibold  '>And pretty much that is it 👍 </h1>
 </div>
 
     </main>
